@@ -1,6 +1,15 @@
+Docker Invoice Ninja
+====================
+
+# Introduction
+
 DockerFile for invoice ninja (https://www.invoiceninja.com/)
 
 This image is based on `php:7` official version.
+
+Official repository on https://github.com/moss-it/docker-invoiceninja
+
+# Quick start
 
 The easiest way to try this image is via docker compose :
 
@@ -12,18 +21,34 @@ db:
     MYSQL_ROOT_PASSWORD: mdp
 
 app:
-  image: invoiceninja/invoiceninja
+  image: moss/invoiceninja:2.5.2.2
   links:
     - db:mysql
-
-web:
-  image: nginx
-  volumes:
-    - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  links:
-    - app
-  volumes_from:
-    - app
   ports:
-    - 80
+    - 80:80
 ```
+
+# Available variables
+
+
+`DB_HOST`
+
+Mysql database host;
+
+`DB_DATABASE`
+
+Database name; (Default: ninja)
+
+`APP_KEY`
+
+App secutiry key; (Default: SomeRandomString)
+
+`LOG`
+
+
+This image supports `single`, `daily`, `syslog` and `errorlog` logging modes,
+following Laravel https://laravel.com/docs/5.2/errors#configuration. (**Default errorlog **)
+
+`APP_DEBUG` 
+
+For debug, set this to `1`. (Default 0)

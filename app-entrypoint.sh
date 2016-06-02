@@ -36,4 +36,6 @@ fi
 
 chown www-data .env
 
-exec "$@"
+php-fpm -O -D && nginx -g "daemon off;"
+
+exit 0

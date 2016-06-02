@@ -1,6 +1,9 @@
-FROM php:fpm
+FROM php:7-fpm
 
-MAINTAINER Samuel Laulhau <sam@lalop.co>
+MAINTAINER Thiago Almeida <thiagoalmeidasa@gmail.com>
+
+
+ENV INVOICENINJA_VERSION 2.5.2.2
 
 #####
 # SYSTEM REQUIREMENT
@@ -8,7 +11,7 @@ MAINTAINER Samuel Laulhau <sam@lalop.co>
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libmcrypt-dev zlib1g-dev git libgmp-dev \
-        libfreetype6-dev libjpeg62-turbo-dev libpng12-dev \
+        libfreetype6-dev libjpeg62-turbo-dev libpng12-dev nginx \
     && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-configure gmp \
@@ -25,11 +28,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # DOWNLOAD AND INSTALL INVOICE NINJA
 #####
 
-ENV INVOICENINJA_VERSION 2.5.2.2
 
-RUN curl -o invoiceninja.tar.gz -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJA_VERSION}.tar.gz \
-    && tar -xzf invoiceninja.tar.gz -C /var/www/ \
-    && rm invoiceninja.tar.gz \
+RUN curl -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJA_VERSION}.tar.gz \
+    | tar -xz  -C /var/www/ \
     && mv /var/www/invoiceninja-${INVOICENINJA_VERSION} /var/www/app \
     && chown -R www-data:www-data /var/www/app \
     && composer install --working-dir /var/www/app -o --no-dev --no-interaction --no-progress \
@@ -47,8 +48,14 @@ ENV APP_KEY SomeRandomString
 ENV LOG errorlog
 ENV APP_DEBUG 0
 
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
-#use to be mounted into nginx for exemple
+# NginX Configuration
+ADD nginx.conf /etc/nginx/nginx.conf
+
+#use to be mounted into nginx for example
 VOLUME /var/www/app/public
 
 WORKDIR /var/www/app
@@ -59,4 +66,3 @@ COPY app-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php-fpm"]

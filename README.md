@@ -33,11 +33,15 @@ app:
 
 `DB_HOST`
 
-Mysql database host;
+Mysql database host; (Default: mysql)
 
 `DB_DATABASE`
 
 Database name; (Default: ninja)
+
+`DB_USERNAME`
+
+Database username; (Default: root)
 
 `APP_KEY`
 

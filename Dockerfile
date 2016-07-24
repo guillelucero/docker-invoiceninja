@@ -35,10 +35,11 @@ RUN curl -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJ
     | tar -xz  -C /var/www/ \
     && mv /var/www/invoiceninja-${INVOICENINJA_VERSION} /var/www/app \
     && chown -R www-data:www-data /var/www/app \
-    && composer install --working-dir /var/www/app -o --no-dev --no-interaction --no-progress \
-    && chown -R www-data:www-data /var/www/app/bootstrap/cache \
+    && composer install --working-dir /var/www/app -o --no-dev --no-interaction \
+    --no-progress \
     && mv /var/www/app/storage /var/www/app/docker-backup-storage \
-    && mv /var/www/app/public/logo /var/www/app/docker-backup-public-logo
+    && mv /var/www/app/public/logo /var/www/app/docker-backup-public-logo \
+    && chown -R www-data:www-data /var/www/app/
 
 
 ######

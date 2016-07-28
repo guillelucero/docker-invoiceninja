@@ -3,8 +3,6 @@ FROM php:7-fpm
 MAINTAINER Thiago Almeida <thiagoalmeidasa@gmail.com>
 
 
-ENV INVOICENINJA_VERSION 2.5.2.2
-
 #####
 # SYSTEM REQUIREMENT
 #####
@@ -29,7 +27,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 #####
 # DOWNLOAD AND INSTALL INVOICE NINJA
 #####
-
+ENV INVOICENINJA_VERSION 2.6.7
 
 RUN curl -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJA_VERSION}.tar.gz \
     | tar -xz  -C /var/www/ \

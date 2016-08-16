@@ -18,7 +18,7 @@ else
 	IN_STORAGE_BACKUP="$(ls /var/www/app/docker-backup-storage/)"
 	for path in $IN_STORAGE_BACKUP; do
 		if [ ! -e "/var/www/app/storage/$path" ]; then
-			cp -Rp "/var/www/app/docker-backup-storage/$path" "/var/www/app/storage/"
+            cp -Rp "/var/www/app/docker-backup-storage/$path" "/var/www/app/storage/"
 		fi
 	done
 fi
@@ -35,6 +35,7 @@ else
 fi
 
 chown www-data .env
+chown -R www-data:www-data "/var/www/app/public/logo/" "/var/www/app/storage"
 
 php-fpm -O -D && nginx -g "daemon off;"
 

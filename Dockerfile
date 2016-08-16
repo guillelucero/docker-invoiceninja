@@ -27,15 +27,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 #####
 # DOWNLOAD AND INSTALL INVOICE NINJA
 #####
-ENV INVOICENINJA_VERSION 2.6.7
+ENV INVOICENINJA_VERSION 2.6.10
 
 RUN curl -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJA_VERSION}.tar.gz \
     | tar -xz  -C /var/www/ \
     && mv /var/www/invoiceninja-${INVOICENINJA_VERSION} /var/www/app \
-    && chown -R www-data:www-data /var/www/app \
     && composer install --working-dir /var/www/app -o --no-dev --no-interaction \
-    --no-progress \
-    && mv /var/www/app/storage /var/www/app/docker-backup-storage \
+    --no-progress
+RUN mv /var/www/app/storage /var/www/app/docker-backup-storage \
     && mv /var/www/app/public/logo /var/www/app/docker-backup-public-logo \
     && chown -R www-data:www-data /var/www/app/
 
@@ -45,7 +44,7 @@ RUN curl -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJ
 ######
 ENV DB_HOST mysql
 ENV DB_DATABASE ninja
-ENV APP_KEY SomeRandomString
+ENV APP_KEY SomeRandomStringSomeRandomString
 ENV LOG errorlog
 ENV APP_DEBUG 0
 

@@ -21,7 +21,7 @@ db:
     MYSQL_ROOT_PASSWORD: mdp
 
 app:
-  image: moss/invoiceninja:2.5.2.2
+  image: moss/invoiceninja:2.7.1
   links:
     - db:mysql
   ports:

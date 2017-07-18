@@ -61,7 +61,7 @@ VOLUME /var/www/app/public/logo
 
 WORKDIR /var/www/app
 
-EXPOSE 80
+EXPOSE 8888
 
 COPY app-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

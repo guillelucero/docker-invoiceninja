@@ -27,11 +27,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 #####
 # DOWNLOAD AND INSTALL INVOICE NINJA
 #####
-ENV INVOICENINJA_VERSION 2.8.1
+ARG INVOICENINJA_REVISION=none 
 
-RUN curl -SL https://github.com/hillelcoren/invoice-ninja/archive/v${INVOICENINJA_VERSION}.tar.gz \
-    | tar -xz  -C /var/www/ \
-    && mv /var/www/invoiceninja-${INVOICENINJA_VERSION} /var/www/app \
+RUN git clone https://github.com/guillelucero/invoiceninja /var/www/invoiceninja-${INVOICENINJA_REVISION} \
+    && cd /var/www/invoiceninja-${INVOICENINJA_REVISION} \
+    && git checkout ${INVOICENINJA_REVISION} \
+    && mv /var/www/invoiceninja-${INVOICENINJA_REVISION} /var/www/app \
     && composer install --working-dir /var/www/app -o --no-dev --no-interaction \
     --no-progress
 RUN mv /var/www/app/storage /var/www/app/docker-backup-storage \

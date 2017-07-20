@@ -1,0 +1,27 @@
+version: "2"
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: ninja
+      MYSQL_ROOT_PASSWORD: pwd
+  app:
+    image: invoice
+    environment:
+      DEBUG: 1
+      APP_KEY: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      APP_DEBUG: 1
+      APP_URL: http://localhost:8000
+      DB_USERNAME: root
+      DB_PASSWORD: pwd
+      DB_HOST: mysql
+      MAIL_HOST: mail.service.host
+      MAIL_USERNAME: username
+      MAIL_PASSWORD=: password
+      MAIL_DRIVER: smtp
+      MAIL_FROM_NAME: "My name"
+      MAIL_FROM_ADDRESS: user@mail.com
+    links:
+      - db:mysql
+    ports:
+      - 80:8888

@@ -1,0 +1,26 @@
+name: invoice_app_{branch_name}
+kind: blueprint
+clusters:
+  app:                           
+    services:
+    - breed:
+        name: app:1.0.1
+        kind: breed
+        deployable:
+          type: container/docker
+          definition: guillelucero/invoiceninja:{docker-tag}
+        ports:
+          web: 8888/http
+        environment_variables:
+          MAIL_DRIVER: smtp
+          MAIL_FROM_ADDRESS: user@mail.com
+          MAIL_USERNAME: username
+          APP_URL: http://ninja.dev
+          APP_KEY: SomeRandomStringSomeRandomString
+          APP_CIPHER: AES-256-CBC
+          DB_HOST: {db-host}
+          APP_DEBUG: '1'
+          DB_USERNAME: root
+          MAIL_PASSWORD: password
+          DB_PASSWORD: {db-password}
+          MAIL_FROM_NAME: My name
